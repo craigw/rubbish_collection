@@ -34,7 +34,6 @@ module RubbishCollection
   end
 
   class CollectionTime
-    DAYS = %w( Sunday Monday Tuesday Wednesday Thursday Friday Saturday ).map(&:freeze).freeze
 
     attr_accessor :day
     private :day=, :day
@@ -52,7 +51,7 @@ module RubbishCollection
     end
 
     def human_day
-      DAYS[day]
+      Date::DAYNAMES[day]
     end
 
     def human_time
@@ -70,13 +69,15 @@ module RubbishCollection
     end
   end
 
-  def self.times_at_postcode postcode
+  def self.times_at_postcode postcode, house_number="1"
     times = CollectionTimes.new
     local_authority = LocalAuthority::LocalAuthority.find_by_postcode postcode
     return times if local_authority.nil?
     adaptor = adapter_for local_authority
-    adaptor.collection_times_at(postcode).each do |t|
-      times << t
+    if adaptor.method(:collection_times_at).arity == 2
+      adaptor.collection_times_at(postcode, house_number).each {|t| times << t }
+    else
+      adaptor.collection_times_at(postcode).each {|t| times << t }
     end
     times
   end
@@ -98,3 +99,4 @@ end
 
 require 'rubbish_collection/redbridge'
 require 'rubbish_collection/southwark'
+require 'rubbish_collection/rushmoor'
