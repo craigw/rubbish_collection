@@ -34,7 +34,6 @@ module RubbishCollection
   end
 
   class CollectionTime
-    DAYS = %w( Sunday Monday Tuesday Wednesday Thursday Friday Saturday ).map(&:freeze).freeze
 
     attr_accessor :day
     private :day=, :day
@@ -52,7 +51,7 @@ module RubbishCollection
     end
 
     def human_day
-      DAYS[day]
+      Date::DAYNAMES[day]
     end
 
     def human_time
