@@ -99,3 +99,4 @@ end
 
 require 'rubbish_collection/redbridge'
 require 'rubbish_collection/southwark'
+require 'rubbish_collection/rushmoor'
