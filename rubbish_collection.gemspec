@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = RubbishCollection::VERSION
 
   gem.add_runtime_dependency 'local_authority', '~> 0.0.4'
+  gem.add_runtime_dependency 'nokogiri'
 end

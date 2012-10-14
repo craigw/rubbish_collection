@@ -22,7 +22,7 @@ Or install it yourself as:
 
     collection_times = RubbishCollection.times_at_postcode 'SE1 1EY'
     collection_times.each do |t|
-      puts t
+      puts t.to_s
     end
 
 

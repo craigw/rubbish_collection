@@ -10,7 +10,7 @@ module RubbishCollection
       self.local_authority = local_authority
     end
 
-    def collection_times
+    def collection_times_at postcode
       raise "I don't know how to fetch times for #{local_authority.name}"
     end
   end
@@ -34,6 +34,8 @@ module RubbishCollection
   end
 
   class CollectionTime
+    DAYS = %w( Sunday Monday Tuesday Wednesday thursday Friday Saturday ).map(&:freeze).freeze
+
     attr_accessor :day
     private :day=, :day
 
@@ -44,6 +46,19 @@ module RubbishCollection
       self.day = day
       self.time = time
     end
+
+    def human_day
+      DAYS[day]
+    end
+
+    def human_time
+      t = time.to_s.rjust 4, '0'
+      t[0..1] + ':' + t[2..3]
+    end
+
+    def to_s
+      "#{human_day} #{human_time}"
+    end
   end
 
   def self.times_at_postcode postcode
@@ -51,7 +66,7 @@ module RubbishCollection
     local_authority = LocalAuthority::LocalAuthority.find_by_postcode postcode
     return times if local_authority.nil?
     adaptor = adapter_for local_authority
-    adaptor.collection_times.each do |t|
+    adaptor.collection_times_at(postcode).each do |t|
       times << t
     end
     times
@@ -62,10 +77,14 @@ module RubbishCollection
   end
 
   def self.adapter_for local_authority
-    adapters[local_authority.map_it_id].new local_authority
+    adapter = adapters[local_authority.map_it_id]
+    adapter.load if adapter.respond_to? :load
+    adapter.new local_authority
   end
 
   def self.register_adapter map_it_id, adapter
     adapters[map_it_id] = adapter
   end
 end
+
+require 'rubbish_collection/redbridge'
