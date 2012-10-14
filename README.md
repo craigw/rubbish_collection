@@ -20,7 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
-    address = OpenStruct.new :property_number => "1", :street_name => "Farnborough Road", :postcode => "GU14 7JU"
+    address = OpenStruct.new :house_number => "2",
+      :street_name => "Beech Road", :postcode => "GU14 8EU"
     collection_times = RubbishCollection.times_at_address address
     collection_times.each do |t|
       puts t.to_s
