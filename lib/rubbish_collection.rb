@@ -70,12 +70,13 @@ module RubbishCollection
     end
   end
 
-  def self.times_at_postcode postcode
+  def self.times_at_address address
+    pc = address.postcode
+    local_authority = LocalAuthority::LocalAuthority.find_by_postcode pc
     times = CollectionTimes.new
-    local_authority = LocalAuthority::LocalAuthority.find_by_postcode postcode
     return times if local_authority.nil?
     adaptor = adapter_for local_authority
-    adaptor.collection_times_at(postcode).each do |t|
+    adaptor.collection_times_at(address).each do |t|
       times << t
     end
     times

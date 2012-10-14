@@ -20,7 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
-    collection_times = RubbishCollection.times_at_postcode 'SE1 1EY'
+    address = OpenStruct.new :street_name => "Redcross Way", :postcode => "SE1 1EY"
+    collection_times = RubbishCollection.times_at_address address
     collection_times.each do |t|
       puts t.to_s
     end
@@ -36,8 +37,16 @@ You can get the ID to register your local authority adapter against by looking
 at the [local authority database][0] in my [local\_authority gem][1]. It's the
 last column of the CSV row.
 
+Note that the API of the address object used in this gem hasn't yet been settled
+on. Different local authorities need different parts or formats of the address
+to determine collection times eg Southwark and Redbridge are pretty good with
+just the postcode but Westminster need a street name. At some point we should
+either find a gem that already caters to addresses and provides a nice API and
+tools for comparison, or we should define or own.
+
 [0]: https://raw.github.com/craigw/local_authority/master/db/local_authorities.csv
 [1]: https://github.com/craigw/local_authority
+
 
 ## Contributing
 

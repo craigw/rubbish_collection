@@ -9,9 +9,9 @@ module RubbishCollection
     def initialize local_authority
     end
 
-    def collection_times_at postcode
+    def collection_times_at address
       Net::HTTP.start "wasteservices.southwark.gov.uk", 80 do |http|
-        req = Net::HTTP::Get.new "/findAddress.asp?pc=#{postcode.gsub(/\s+/, '')}"
+        req = Net::HTTP::Get.new "/findAddress.asp?pc=#{address.postcode.gsub(/\s+/, '')}"
         response = http.request req
         addresses = Nokogiri::HTML.fragment response.body
         first_address = addresses.xpath(".//option").detect { |o| o['value'].to_s.strip != '' }

@@ -9,10 +9,10 @@ module RubbishCollection
     def initialize local_authority
     end
 
-    def collection_times_at postcode
+    def collection_times_at address
       Net::HTTP.start "www.redbridge.gov.uk", 80 do |http|
         req = Net::HTTP::Get.new '/RecycleRefuse'
-        req['Cookie'] = "RedbridgeIV3LivePref=postcode=#{postcode}"
+        req['Cookie'] = "RedbridgeIV3LivePref=postcode=#{address.postcode}"
         response = http.request req
         doc = Nokogiri::HTML response.body
         info = doc.xpath "//*[@id='RegularCollectionDay']"
