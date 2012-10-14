@@ -15,6 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = RubbishCollection::VERSION
 
-  gem.add_runtime_dependency 'local_authority', '~> 0.0.4'
+  gem.add_runtime_dependency 'local_authority', '~> 0.0.5'
   gem.add_runtime_dependency 'nokogiri'
 end

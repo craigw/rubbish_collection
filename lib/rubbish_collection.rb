@@ -11,7 +11,7 @@ module RubbishCollection
     end
 
     def collection_times_at postcode
-      raise "I don't know how to fetch times for #{local_authority.name}"
+      raise "I don't know how to fetch times for #{local_authority.name} #{local_authority.map_it_id}"
     end
   end
 
@@ -34,7 +34,7 @@ module RubbishCollection
   end
 
   class CollectionTime
-    DAYS = %w( Sunday Monday Tuesday Wednesday thursday Friday Saturday ).map(&:freeze).freeze
+    DAYS = %w( Sunday Monday Tuesday Wednesday Thursday Friday Saturday ).map(&:freeze).freeze
 
     attr_accessor :day
     private :day=, :day
@@ -42,9 +42,13 @@ module RubbishCollection
     attr_accessor :time
     private :time=, :time
 
-    def initialize day, time
+    attr_accessor :pickup_type
+    private :pickup_type=, :pickup_type
+
+    def initialize day, time = :unknown, pickup_type = :domestic_refuse
       self.day = day
       self.time = time
+      self.pickup_type = pickup_type
     end
 
     def human_day
@@ -52,12 +56,17 @@ module RubbishCollection
     end
 
     def human_time
+      return if time == :unknown
       t = time.to_s.rjust 4, '0'
       t[0..1] + ':' + t[2..3]
     end
 
+    def human_type
+      pickup_type.to_s.split(/_/).join(' ')
+    end
+
     def to_s
-      "#{human_day} #{human_time}"
+      [ human_day, human_time ].compact.join(' ') + " - #{human_type}"
     end
   end
 
@@ -88,3 +97,4 @@ module RubbishCollection
 end
 
 require 'rubbish_collection/redbridge'
+require 'rubbish_collection/southwark'
