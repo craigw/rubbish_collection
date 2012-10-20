@@ -54,19 +54,8 @@ just the postcode but Westminster need a street name. At some point we should
 either find a gem that already caters to addresses and provides a nice API and
 tools for comparison, or we should define or own.
 
-Not all local authorities perform all collections on a weekly basis -
-[fuzzmonkey][2] points out that Rushmoor only pick up recycling once a
-fortnight. This project can't handle schedules like that yet. Perhaps we
-should consider pulling in a more advanced temporal event library?
-
-  * [Recurring Event][3]
-  * [RUNT][4]
-
 [0]: https://raw.github.com/craigw/local_authority/master/db/local_authorities.csv
 [1]: https://github.com/craigw/local_authority
-[2]: https://github.com/fuzzmonkey
-[3]: https://github.com/nickstenning/recurring_event
-[4]: https://github.com/texel/runt
 
 
 ## Contributing
