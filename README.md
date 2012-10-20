@@ -20,6 +20,15 @@ Or install it yourself as:
 
 ## Usage
 
+    require 'ostruct'
+
+    address = OpenStruct.new :house_number => "43",
+      :street_name => "Redcross Way", :postcode => "SE1 1EY"
+    collection_times = RubbishCollection.times_at_address address
+    collection_times.each do |t|
+      puts t.to_s
+    end
+
     address = OpenStruct.new :house_number => "2",
       :street_name => "Beech Road", :postcode => "GU14 8EU"
     collection_times = RubbishCollection.times_at_address address

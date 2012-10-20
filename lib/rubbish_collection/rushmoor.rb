@@ -24,17 +24,22 @@ module RubbishCollection
         times = []
         container.xpath("p").each do |rubbish_div|
           lines = rubbish_div.text.split("\n")
-          collection_type = case lines[1]
-            when /rubbish bin collection/
-              :domestic_refuse
-            # In Rushmoor, recycling comes every two weeks, CollectionTime doesn't really support this
-            # when /recycling collection/
-            #   :domestic_recycling
-            else
-              next
+          day_name = lines[2].to_s.strip.split(" ")[0]
+          s = Schedule.new Resolution::DAY
+          collection = case lines[1]
+          when /rubbish bin collection/
+            s.add_rule Schedule.day_of_week day_name
+            Collection.new DOMESTIC_RUBBISH, s
+          when /recycling collection/
+            nc = Time.parse lines[2]
+            start_date = Runt::PDate.day nc.year, nc.month, nc.day
+            s.add_rule Runt::EveryTE.new(start_date, 2, Runt::DPrecision::WEEK)
+            s.add_rule Schedule.day_of_week day_name
+            Collection.new DOMESTIC_RECYCLING, s
+          else
+            next
           end
-          day_index = Date::DAYNAMES.index(lines[2].strip.split(" ")[0])
-          times << CollectionTime.new(day_index, :unknown, collection_type)
+          times << collection
         end
         times
       end

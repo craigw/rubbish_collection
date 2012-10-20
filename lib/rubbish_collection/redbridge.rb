@@ -21,9 +21,11 @@ module RubbishCollection
         hour = hour.to_i
         hour += 12 if modifier == "pm"
         time = hour * 100
-        day = info.xpath ".//*[@class='day']/text()"
-        day_index = DAYS.index day.to_s.strip
-        [ CollectionTime.new(day_index, time) ]
+        day_name = info.xpath(".//*[@class='day']/text()").to_s
+        s = Schedule.new Resolution::HOUR
+        s.add_rule Schedule.day_of_week day_name
+        s.add_rule Schedule.hour hour
+        [ Collection.new(DOMESTIC_RUBBISH, s) ]
       end
     end
   end

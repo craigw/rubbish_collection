@@ -25,20 +25,22 @@ module RubbishCollection
           link_text = link.inner_text.to_s.strip
           collection_type = case link_text
           when /refuse bin/
-            :domestic_refuse
+            DOMESTIC_RUBBISH
           when /communal recycling bins/
-            :communal_recycling
+            COMMUNAL_RECYCLING
           when /mixed recycling bag/
-            :mixed_recycling_bag
+            DOMESTIC_RECYCLING
           else
-            link_text.to_sym
+            next
           end
           DAYS.inject([]) { |a,e|
-            a << DAYS.index(e) if fragment =~ /#{e}/i
+            a << e if fragment =~ /#{e}/i
             a
           }.each do |d|
-            t = CollectionTime.new d, :unknown, collection_type
-            times << t
+            s = Schedule.new Resolution::DAY
+            s.add_rule Schedule.day_of_week(d)
+            c = Collection.new collection_type, s
+            times << c
           end
         end
         times

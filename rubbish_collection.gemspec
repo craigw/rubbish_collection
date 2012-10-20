@@ -17,4 +17,5 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'local_authority', '~> 0.0.5'
   gem.add_runtime_dependency 'nokogiri'
+  gem.add_runtime_dependency 'runt19', '~> 0.7.7'
 end
